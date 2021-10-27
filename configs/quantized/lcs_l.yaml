@@ -1,0 +1,30 @@
+#
+# For licensing see accompanying LICENSE file.
+# Copyright (C) 2021 Apple Inc. All Rights Reserved.
+#
+parameters:
+  regime: "quantized"
+  dataset: "cifar10"
+  script: "train_curve.py"
+  save_dir: "saved_models/quantized/"
+  # Line:
+  num_points: 2
+  conv_type: "LinesConv" # First convolution layer
+  bn_type: "LinesGN" # Batchnorm for first convolution layer
+  block_conv_type: "LinesConvBn2d" # Convolution layer for blocks
+  block_bn_type: "LinesGN" # Convolution batchnorm layer for blocks
+  epochs: 200 # The number of epochs to train for
+  batch_size: 128 # Train and test batch sizes
+  warmup_budget: 80 # percentage of epochs for "warmup" phase
+  test_freq: 20 # Will run test after this many epochs
+  alpha_grid: [0.166, 0.333, 0.499, 0.666, 0.833, 1] # When bit widths {3, ..., 8}
+  learning_rate: 0.025 # Optimizer learning rate
+  momentum: 0.9 # Optimizer momentum
+  weight_decay: 0.0005 # L2 regularization parameter
+  min_bits: 3
+  max_bits: 8
+  discrete_alpha_map: True
+  model_config:
+    model_class: cpreresnet20
+    model_kwargs:
+      channel_selection_active: False

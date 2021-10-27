@@ -1,0 +1,29 @@
+#
+# For licensing see accompanying LICENSE file.
+# Copyright (C) 2021 Apple Inc. All Rights Reserved.
+#
+parameters:
+  regime: "quantized"
+  dataset: "cifar10"
+  save_dir: "saved_models/quantized/"
+  # Multiple trials parameters
+  num_runs: 3
+  script: "train_indep.py"
+  epochs: 200 # The number of epochs to train for
+  batch_size: 128 # Train and test batch sizes
+  warmup_budget: 80 # decays topk from 1 to alpha over this percentage of epochs
+  test_freq: 20 # Will run test after this many epochs
+  learning_rate: 0.025 # Optimizer learning rate
+  momentum: 0.9 # Optimizer momentum
+  weight_decay: 0.0005 # L2 regularization parameter
+  conv_type: "StandardConv"
+  bn_type: "StandardBN"
+  block_conv_type: "ConvBn2d"
+  block_bn_type: "StandardBN"
+  num_bits: 6 # Target number of bits
+  random_bits: False # If true, will train with num_bits=8 during warmup and then use random bits in range [min_bits, max_bits]
+  eval_param_grid: [3, 4, 5, 6, 7, 8]
+  model_config:
+    model_class: cpreresnet20
+    model_kwargs:
+        channel_selection_active: False

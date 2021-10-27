@@ -1,0 +1,35 @@
+#
+# For licensing see accompanying LICENSE file.
+# Copyright (C) 2021 Apple Inc. All Rights Reserved.
+#
+parameters:
+  regime: "us"
+  dataset: "cifar10"
+  script: "train_curve.py"
+  save_dir: "saved_models/structured_sparsity/"
+  # Line:
+  num_points: 2
+  conv_type: "AdaptiveConv2d" # First convolution layer
+  bn_type: "LinesAdaptiveIN" # Batchnorm for first convolution layer
+  block_conv_type: "AdaptiveConv2d" # Convolution layer for ResNet blocks
+  block_bn_type: "LinesAdaptiveIN" # Convolution batchnorm layer for ResNet blocks
+  epochs: 200 # The number of epochs to train for
+  batch_size: 128 # Train and test batch sizes
+  warmup_budget: 80 # percentage of epochs for "warmup" phase
+  test_freq: 20 # Will run test after this many epochs
+  # To evaluate at width factors [1.0, 0.875, 0.75, 0.625, 0.5, 0.375, 0.25], we need the alpha grid to look like this.
+  # (and we must appropriately set the width_factor_limits inside regime_params).
+  alpha_grid: [1.0, 0.83333, 0.66667, 0.5, 0.33333, 0.166667, 0]
+  learning_rate: 0.1 # Optimizer learning rate
+  momentum: 0.9 # Optimizer momentum
+  weight_decay: 0.0005 # L2 regularization parameter
+  model_config:
+    model_class: cpreresnet20
+    model_kwargs:
+      channel_selection_active: False
+  regime_params:
+    # eval_width_factors: [1.0, 0.875, 0.75, 0.625, 0.5, 0.375, 0.25]
+    width_factor_limits: [0.25, 1.0]
+    width_factor_samples: 4
+    width_factor_sampling_method: sandwich
+    apply_beta_to_norm: True

@@ -1,0 +1,34 @@
+#
+# For licensing see accompanying LICENSE file.
+# Copyright (C) 2021 Apple Inc. All Rights Reserved.
+#
+parameters:
+  regime: "us"
+  dataset: "cifar10"
+  script: "train_indep.py"
+  save_dir: "saved_models/structured_sparsity/"
+  epochs: 200 # The number of epochs to train for
+  batch_size: 128 # Train and test batch sizes
+  warmup_budget: 80 # decays topk from 1 to target topk over this percentage of epochs
+  test_freq: 20 # Will run test after this many epochs
+  learning_rate: 0.1 # Optimizer learning rate
+  momentum: 0.9 # Optimizer momentum
+  weight_decay: 0.0005 # L2 regularization parameter
+  conv_type: "AdaptiveConv2d" # convolution layer for first layer of network
+  bn_type: "AdaptiveIN" # batch norm layer for first layer of network
+  block_conv_type: "AdaptiveConv2d" # convolution layer to use for resnet blocks
+  block_bn_type: "AdaptiveIN" # batch norm layer to use for resnet blocks
+  topk: 1.0 # the target topk to reach after warmup phase
+  random_topk: False # If true, will train with topk=1 during warmup and then use random topk values
+  norm_kwargs:
+    width_factors_list: null
+  model_config:
+    model_class: cpreresnet20
+    model_kwargs:
+      channel_selection_active: False
+  regime_params:
+    eval_width_factors: [1.0, 0.875, 0.75, 0.625, 0.50, 0.375, 0.25]
+    width_factor_limits: [0.25, 1.0]
+    width_factor_samples: 4
+
+  eval_param_grid: [1.0, 0.875, 0.75, 0.625, 0.50, 0.375, 0.25] # Same as eval_width_factors

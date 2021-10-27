@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+autoflake --in-place --remove-unused-variables --remove-all-unused-imports $1
+black -l 80 $1
+isort -sl $1
+tools/remove-whitespace.sh $1

@@ -1,0 +1,7 @@
+autoflake==1.4
+black==20.8b1
+isort==5.8.0
+numpy==1.19.5
+scipy==1.5.4
+torch==1.8.1+cu111
+torchvision==0.9.1+cu111
